@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A.R.I.A. HUD - Unit Status</title>
+<link rel="stylesheet" href="../assets/hud.css">
+</head>
+<body>
+<main class="panel">
+  <div class="placeholder-banner" id="placeholderBanner" hidden>SAMPLE DATA</div>
+  <div class="brand">A.R.I.A.</div>
+  <div class="sub">Wearer Control Interface // Unit Status</div>
+  <span class="status" id="statusBadge">NOT CONNECTED</span>
+
+  <section class="section">
+    <div class="label">Unit</div>
+    <div class="value" id="unitName">Not Connected</div>
+    <div class="label" style="margin-top:10px">Persona / Admin</div>
+    <div id="personaAdmin">- / -</div>
+  </section>
+
+  <section class="section">
+    <div class="meter-row">
+      <div class="meter-label"><span>Power</span><span id="batteryPct">--%</span></div>
+      <div class="meter-track"><div class="meter-fill" id="batteryBar" style="width:0%"></div></div>
+    </div>
+    <div class="meter-row">
+      <div class="meter-label"><span>Arousal</span><span id="arousalPct">--%</span></div>
+      <div class="meter-track"><div class="meter-fill" id="arousalBar" style="width:0%"></div></div>
+    </div>
+    <div class="meter-row">
+      <div class="meter-label"><span>Stimulation</span><span id="stimulationPct">--%</span></div>
+      <div class="meter-track"><div class="meter-fill" id="stimulationBar" style="width:0%"></div></div>
+    </div>
+    <div class="meter-row">
+      <div class="meter-label"><span>Pain</span><span id="painPct">--%</span></div>
+      <div class="meter-track"><div class="meter-fill warn" id="painBar" style="width:0%"></div></div>
+    </div>
+    <div class="meter-row">
+      <div class="meter-label"><span>Energy</span><span id="energyPct">--%</span></div>
+      <div class="meter-track"><div class="meter-fill" id="energyBar" style="width:0%"></div></div>
+    </div>
+  </section>
+
+  <div class="footer">A.R.I.A. // UNIT TELEMETRY</div>
+</main>
+
+<script src="../assets/hud.js"></script>
+<script>
+  function setMeter(prefix, pct) {
+    pct = AriaHud.clampPct(pct);
+    document.getElementById(prefix + "Pct").textContent = Math.round(pct) + "%";
+    document.getElementById(prefix + "Bar").style.width = pct + "%";
+  }
+
+  var unit = AriaHud.get("unit", "");
+  var secured = AriaHud.getBool("secured", false);
+
+  var badge = document.getElementById("statusBadge");
+  if (unit === "") {
+    badge.textContent = "NOT CONNECTED";
+    badge.classList.add("offline");
+  } else if (secured) {
+    badge.textContent = "SECURED";
+    badge.classList.add("online");
+  } else {
+    badge.textContent = "NON-SECURED";
+    badge.classList.add("scanning");
+  }
+
+  document.getElementById("unitName").textContent = unit === "" ? "Not Connected" : unit;
+  document.getElementById("personaAdmin").textContent =
+    AriaHud.get("persona", "-") + " / " + AriaHud.get("admin", "-");
+
+  setMeter("battery", AriaHud.getFloat("battery", 100));
+  setMeter("arousal", AriaHud.getFloat("arousal", 0));
+  setMeter("stimulation", AriaHud.getFloat("stimulation", 0));
+  setMeter("pain", AriaHud.getFloat("pain", 0));
+  setMeter("energy", AriaHud.getFloat("energy", 100));
+
+  if (!AriaHud.hasAnyParams()) {
+    document.getElementById("placeholderBanner").hidden = false;
+  }
+</script>
+</body>
+</html>

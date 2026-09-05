@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A.R.I.A. HUD - Main</title>
+<link rel="stylesheet" href="../assets/hud.css">
+</head>
+<body>
+<main class="panel">
+  <div class="placeholder-banner" id="placeholderBanner" hidden>SAMPLE DATA</div>
+  <div class="brand">A.R.I.A.</div>
+  <div class="sub">Wearer Control Interface // Main Node</div>
+  <span class="status" id="statusBadge">DISCONNECTED</span>
+
+  <section class="section">
+    <div class="label">Active unit</div>
+    <div class="value" id="unitName">No unit selected</div>
+    <div class="label" style="margin-top:10px">Persona</div>
+    <div id="persona">-</div>
+  </section>
+
+  <section class="grid">
+    <div class="metric"><span class="label">Power</span><strong id="battery">--%</strong></div>
+    <div class="metric"><span class="label">Mode</span><strong id="mode">--</strong></div>
+    <div class="metric"><span class="label">System</span><strong id="status">--</strong></div>
+    <div class="metric"><span class="label">Units found</span><strong id="unitsFound">0</strong></div>
+  </section>
+
+  <div class="footer">A.R.I.A. // LINK STATUS NOMINAL</div>
+</main>
+
+<script src="../assets/hud.js"></script>
+<script>
+  var connection = AriaHud.get("connection", "DISCONNECTED");
+  var connectionClass = "offline";
+  if (connection === "SCANNING") { connectionClass = "scanning"; }
+  else if (connection === "CONNECTED") { connectionClass = "online"; }
+
+  var badge = document.getElementById("statusBadge");
+  badge.textContent = connection;
+  badge.classList.add(connectionClass);
+
+  document.getElementById("unitName").textContent = AriaHud.get("unit", "No unit selected");
+  document.getElementById("persona").textContent = AriaHud.get("persona", "-");
+  document.getElementById("battery").textContent = AriaHud.getInt("battery", 100) + "%";
+  document.getElementById("mode").textContent = AriaHud.get("mode", "Standard");
+  document.getElementById("status").textContent = AriaHud.get("status", "Ready");
+  document.getElementById("unitsFound").textContent = AriaHud.getInt("unitsFound", 0);
+
+  if (!AriaHud.hasAnyParams()) {
+    document.getElementById("placeholderBanner").hidden = false;
+  }
+</script>
+</body>
+</html>

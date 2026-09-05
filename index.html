@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A.R.I.A. HUD Panels</title>
+<link rel="stylesheet" href="assets/hud.css">
+<style>
+  body { overflow: auto; }
+  .panel { height: auto; }
+  .links { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+  .links a {
+    display: block;
+    padding: 14px;
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    color: var(--text);
+    text-decoration: none;
+    background: rgba(54, 197, 216, 0.06);
+  }
+  .links a:hover { background: rgba(54, 197, 216, 0.14); }
+  .links small { display: block; color: var(--label); margin-top: 4px; }
+</style>
+</head>
+<body>
+<main class="panel">
+  <div class="brand">A.R.I.A.</div>
+  <div class="sub">Wearer HUD - Panel Index (dev preview, not a HUD prim page)</div>
+  <p class="empty-note">Each link below opens a panel with sample data. In-world, each HUD prim points
+  its own PRIM_MEDIA_CURRENT_URL at one of these panel folders with live query parameters attached.</p>
+  <div class="links">
+    <a href="main/"><strong>Main</strong><small>Connection state, active unit, persona, power, mode</small></a>
+    <a href="unit-status/"><strong>Unit Status</strong><small>Battery, arousal, stimulation, pain, energy</small></a>
+    <a href="app-status/"><strong>App Status</strong><small>Active modules and restrictions</small></a>
+    <a href="proximity/"><strong>Proximity</strong><small>Local sensor sweep, nearby avatars</small></a>
+  </div>
+</main>
+</body>
+</html>

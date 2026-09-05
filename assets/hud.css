@@ -1,0 +1,195 @@
+/* A.R.I.A. Wearer HUD - shared MOAP panel theme
+   Palette matches the sci-fi android/drone look used across the HUD panels.
+   Each panel page (main/unit-status/app-status/proximity) includes this file. */
+
+:root {
+  --bg: #07131d;
+  --panel-bg: rgba(7, 20, 31, 0.90);
+  --accent: #36c5d8;
+  --text: #d8f7ff;
+  --label: #78a8b3;
+  --muted: #7094a0;
+  --divider: #21404a;
+  --metric-bg: rgba(19, 48, 60, 0.72);
+  --online: #7dffb2;
+  --scanning: #ffd166;
+  --offline: #ff7885;
+  --warn: #ff7885;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+body {
+  font-family: "Consolas", "Courier New", monospace;
+  color: var(--text);
+  padding: 28px;
+}
+
+.panel {
+  height: 100%;
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  background: var(--panel-bg);
+  padding: 24px;
+  box-shadow: 0 0 24px rgba(54, 197, 216, 0.28);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.brand {
+  font-size: 28px;
+  letter-spacing: 2px;
+  color: #75f2ff;
+}
+
+.sub {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 5px 0 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.status {
+  display: inline-block;
+  padding: 7px 12px;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+.status.online { color: var(--online); }
+.status.scanning { color: var(--scanning); }
+.status.offline { color: var(--offline); }
+
+.section {
+  margin-top: 20px;
+  padding: 16px 0;
+  border-top: 1px solid var(--divider);
+}
+
+.label {
+  color: var(--label);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.value {
+  font-size: 22px;
+  margin-top: 4px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.metric {
+  background: var(--metric-bg);
+  padding: 12px 14px;
+  border-left: 3px solid var(--accent);
+}
+.metric strong {
+  display: block;
+  font-size: 20px;
+  color: #fff;
+  margin-top: 4px;
+}
+
+.meter-row {
+  margin-top: 14px;
+}
+.meter-row .meter-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--label);
+  margin-bottom: 4px;
+}
+.meter-track {
+  height: 10px;
+  border-radius: 5px;
+  background: var(--divider);
+  overflow: hidden;
+}
+.meter-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #75f2ff);
+  transition: width 0.4s ease;
+}
+.meter-fill.warn {
+  background: linear-gradient(90deg, var(--warn), #ffb199);
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.chip {
+  padding: 5px 10px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--text);
+  background: rgba(54, 197, 216, 0.08);
+}
+.chip.restriction {
+  border-color: var(--warn);
+  color: #ffd9d2;
+  background: rgba(255, 120, 133, 0.08);
+}
+.empty-note {
+  color: var(--muted);
+  font-size: 12px;
+  font-style: italic;
+}
+
+.footer {
+  margin-top: auto;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.placeholder-banner {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--scanning);
+  border: 1px solid var(--scanning);
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(255, 209, 102, 0.08);
+}
+
+.avatar-list {
+  margin-top: 12px;
+  list-style: none;
+  padding: 0;
+  font-size: 13px;
+}
+.avatar-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--divider);
+}
+.avatar-list li span.dist {
+  color: var(--label);
+}

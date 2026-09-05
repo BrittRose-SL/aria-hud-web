@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A.R.I.A. HUD - Proximity</title>
+<link rel="stylesheet" href="../assets/hud.css">
+</head>
+<body>
+<main class="panel">
+  <div class="placeholder-banner" id="placeholderBanner" hidden>SAMPLE DATA</div>
+  <div class="brand">A.R.I.A.</div>
+  <div class="sub">Wearer Control Interface // Proximity Scanner</div>
+  <span class="status" id="statusBadge">IDLE</span>
+
+  <section class="grid">
+    <div class="metric"><span class="label">Detected</span><strong id="count">0</strong></div>
+    <div class="metric"><span class="label">Scan range</span><strong id="range">-- m</strong></div>
+  </section>
+
+  <section class="section">
+    <div class="label">Nearby avatars</div>
+    <ul class="avatar-list" id="avatarList"></ul>
+  </section>
+
+  <div class="footer">A.R.I.A. // LOCAL SENSOR SWEEP - NOT UNIT TELEMETRY</div>
+</main>
+
+<script src="../assets/hud.js"></script>
+<script>
+  // Unlike the other three panels, the proximity scanner does not come from
+  // the connected unit at all - it's the wearer's own llSensor sweep, so its
+  // params describe local scan state, not remote unit stats.
+  var active = AriaHud.getBool("active", false);
+  var badge = document.getElementById("statusBadge");
+  if (active) {
+    badge.textContent = "SCANNING";
+    badge.classList.add("scanning");
+  } else {
+    badge.textContent = "IDLE";
+    badge.classList.add("offline");
+  }
+
+  document.getElementById("range").textContent = AriaHud.getFloat("range", 20) + " m";
+
+  // avatars=Name1:12.4,Name2:5.0
+  var raw = AriaHud.get("avatars", "");
+  var list = document.getElementById("avatarList");
+  list.innerHTML = "";
+  var entries = raw === "" ? [] : raw.split(",").map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 0; });
+
+  document.getElementById("count").textContent = AriaHud.getInt("count", entries.length);
+
+  if (entries.length === 0) {
+    var li = document.createElement("li");
+    li.innerHTML = "<span class='empty-note'>No avatars in range.</span>";
+    list.appendChild(li);
+  } else {
+    entries.forEach(function (entry) {
+      var parts = entry.split(":");
+      var name = parts[0];
+      var dist = parts.length > 1 ? parts[1] + " m" : "";
+      var li = document.createElement("li");
+      var nameSpan = document.createElement("span");
+      nameSpan.textContent = name;
+      var distSpan = document.createElement("span");
+      distSpan.className = "dist";
+      distSpan.textContent = dist;
+      li.appendChild(nameSpan);
+      li.appendChild(distSpan);
+      list.appendChild(li);
+    });
+  }
+
+  if (!AriaHud.hasAnyParams()) {
+    document.getElementById("placeholderBanner").hidden = false;
+  }
+</script>
+</body>
+</html>

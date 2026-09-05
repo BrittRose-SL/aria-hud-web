@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A.R.I.A. HUD - App Status</title>
+<link rel="stylesheet" href="../assets/hud.css">
+</head>
+<body>
+<main class="panel">
+  <div class="placeholder-banner" id="placeholderBanner" hidden>SAMPLE DATA</div>
+  <div class="brand">A.R.I.A.</div>
+  <div class="sub">Wearer Control Interface // App Status</div>
+  <span class="status" id="statusBadge">NOT CONNECTED</span>
+
+  <section class="section">
+    <div class="label">Active modules</div>
+    <div class="chip-row" id="moduleChips"></div>
+  </section>
+
+  <section class="section">
+    <div class="label">Active restrictions</div>
+    <div class="chip-row" id="restrictionChips"></div>
+  </section>
+
+  <div class="footer">A.R.I.A. // MODULE &amp; RESTRICTION STATE</div>
+</main>
+
+<script src="../assets/hud.js"></script>
+<script>
+  function renderChips(containerId, items, chipClass, emptyText) {
+    var container = document.getElementById(containerId);
+    container.innerHTML = "";
+    if (items.length === 0) {
+      var note = document.createElement("div");
+      note.className = "empty-note";
+      note.textContent = emptyText;
+      container.appendChild(note);
+      return;
+    }
+    items.forEach(function (item) {
+      var chip = document.createElement("span");
+      chip.className = "chip" + (chipClass ? " " + chipClass : "");
+      chip.textContent = item;
+      container.appendChild(chip);
+    });
+  }
+
+  var unit = AriaHud.get("unit", "");
+  var badge = document.getElementById("statusBadge");
+  if (unit === "") {
+    badge.textContent = "NOT CONNECTED";
+    badge.classList.add("offline");
+  } else {
+    badge.textContent = unit;
+    badge.classList.add("online");
+  }
+
+  renderChips("moduleChips", AriaHud.getList("modules", ["Core System"]), null, "No active modules.");
+  renderChips("restrictionChips", AriaHud.getList("restrictions", []), "restriction", "No active restrictions.");
+
+  if (!AriaHud.hasAnyParams()) {
+    document.getElementById("placeholderBanner").hidden = false;
+  }
+</script>
+</body>
+</html>
